@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:slurp_restaurant_app/screen/detail/detail_screen.dart';
 import 'package:slurp_restaurant_app/screen/home/dashboard_screen.dart';
 import 'package:slurp_restaurant_app/utils/theme/material.dart';
 import 'package:slurp_restaurant_app/utils/theme/utils.dart';
@@ -30,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: theme.light(),
       darkTheme: theme.dark(),
       themeMode: ThemeMode.system,
-      home: const DetailScreen(),
+      home: const DashboardScreen(),
     );
   }
 }

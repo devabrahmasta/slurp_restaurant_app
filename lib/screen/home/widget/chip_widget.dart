@@ -18,9 +18,11 @@
     @override
     Widget build(BuildContext context) {
       final selectedColor = Theme.of(context).colorScheme.primaryContainer;
-      final unselectedColor = Colors.white;
-      final selectedText = Colors.white;
-      final unselectedText = Colors.grey.shade600;
+      final unselectedColor = Theme.of(context).colorScheme.surfaceBright;
+      final selectedText = Theme.of(context).colorScheme.onPrimaryContainer;
+      final unselectedText = Theme.of(context).colorScheme.onSurfaceVariant;
+      final selectedBorder = Theme.of(context).colorScheme.primaryContainer;
+      final unselectedBorder = Theme.of(context).colorScheme.outlineVariant;
 
       return ChoiceChip(
         onSelected: (value) => onTap(),
@@ -30,7 +32,7 @@
         backgroundColor: unselectedColor,
         selectedColor: selectedColor,
         avatar: Icon(icon, color: isSelected ? selectedText : unselectedText),
-        shape: StadiumBorder(side: BorderSide(color: Colors.grey.shade200)),
+        shape: StadiumBorder(side: BorderSide(color: isSelected ? selectedBorder : unselectedBorder)),
         label: Text(label),
         labelStyle: context.text.labelSmall?.copyWith(color: isSelected ? selectedText : unselectedText),
       );
