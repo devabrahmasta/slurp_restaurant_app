@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:slurp_restaurant_app/provider/home/restaurant_list_provider.dart';
-import 'package:slurp_restaurant_app/screen/home/widget/chip_widget.dart';
 import 'package:slurp_restaurant_app/screen/home/widget/resto_card.dart';
 import 'package:slurp_restaurant_app/screen/home/widget/search_widget.dart';
 import 'package:slurp_restaurant_app/static/list_result_state.dart';
@@ -30,12 +29,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> categories = [
-      {'icon': Icons.restaurant_rounded, 'label': 'All'},
-      {'icon': Icons.emoji_food_beverage_rounded, 'label': 'Coffee'},
-      {'icon': Icons.fastfood_rounded, 'label': 'Fastfood'},
-      {'icon': Icons.local_pizza_rounded, 'label': 'Pizza'},
-    ];
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
@@ -59,6 +52,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 overflow: TextOverflow.ellipsis,
                 style: context.text.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary
                 ),
               ),
               const SizedBox.square(dimension: 16.0),
@@ -66,31 +60,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               // Search bar
               CustomSearchBar(hintText: 'Search restaurants...'),
               const SizedBox.square(dimension: 16.0),
-
-              // Categories
-              SizedBox(
-                height: 50,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: CustomChip(
-                        label: categories[index]['label'],
-                        icon: categories[index]['icon'],
-                        isSelected: selectedIndex == index,
-                        onTap: () {
-                          setState(() {
-                            selectedIndex = index;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox.square(dimension: 24.0),
 
               // Headline
               header(context, 'Popular Nearby'),
@@ -144,19 +113,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       children: [
         Text(
           title,
-          style: context.text.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+          style: context.text.titleMedium?.copyWith(fontWeight: FontWeight.w700),
         ),
-        // TextButton(
-        //   onPressed: () {},
-        //   child: Text(
-        //     'See All',
-        //     style: context.text.bodyMedium?.copyWith(
-        //       color: Theme.of(context).colorScheme.primary,
-        //       fontWeight: FontWeight.w700,
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }
+
 }

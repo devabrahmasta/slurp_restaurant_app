@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:slurp_restaurant_app/data/model/restaurant_list.dart';
+import 'package:slurp_restaurant_app/provider/detail/favorite_provider.dart';
 import 'package:slurp_restaurant_app/utils/theme/theme_extensions.dart';
 
 class RestoCard extends StatelessWidget {
@@ -14,38 +16,26 @@ class RestoCard extends StatelessWidget {
     final backgroundRating = Theme.of(context).colorScheme.secondaryContainer;
     final ratingColor = Theme.of(context).colorScheme.primary;
 
-    return Material(
-      color: Colors.transparent,
-      child: Ink(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(15),
-        ),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16.0),
+      child: Card(
+        color: backgroundCard,
+        elevation: 4,
+        shadowColor: Colors.black38,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(15),
-          child: Container(
-            margin: EdgeInsets.only(bottom: 16.0),
+          child: SizedBox(
             height: 250,
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: backgroundCard,
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  offset: Offset(0, 4),
-                  blurRadius: 12.0,
-                ),
-              ],
-            ),
             child: Column(
               children: [
                 Stack(
                   children: [
                     // Image
                     Hero(
-                      tag: restaurant.id,
+                      tag: restaurant.pictureId,
                       child: SizedBox(
                         height: 150,
                         width: double.infinity,
@@ -56,22 +46,38 @@ class RestoCard extends StatelessWidget {
                           ),
                           child: Image.network(
                             'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
-                            fit: BoxFit.fitWidth,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.image_not_supported_rounded);
+                            },
                           ),
                         ),
                       ),
                     ),
 
-                    // Bookmarks
+                    // Favorite
                     Positioned(
                       top: 8,
                       right: 8,
-                      child: IconButton.filledTonal(
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.black38,
-                        ),
-                        onPressed: () {},
-                        icon: Icon(Icons.favorite, color: Colors.red),
+                      child: Consumer<FavoriteProvider>(
+                        builder: (context, value, child) {
+                          final isFavorite = value.isFavorite(restaurant.id);
+
+                          return IconButton.filledTonal(
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.black38,
+                            ),
+                            onPressed: () {
+                              value.toggleFavorite(restaurant.id);
+                            },
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite_rounded
+                                  : Icons.favorite_outline,
+                              color: isFavorite ? Colors.red : Colors.white,
+                            ),
+                          );
+                        },
                       ),
                     ),
 
@@ -96,60 +102,57 @@ class RestoCard extends StatelessWidget {
                     horizontal: 16.0,
                     vertical: 12.0,
                   ),
-                  child: Expanded(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              restaurant.name,
-                              style: context.text.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w900,
-                              ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            restaurant.name,
+                            style: context.text.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w900,
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: backgroundRating,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.star_rounded,
-                                    size: 15,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: backgroundRating,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.star_rounded,
+                                  size: 15,
+                                  color: ratingColor,
+                                ),
+                                SizedBox.square(dimension: 5),
+                                Text(
+                                  restaurant.rating.toString(),
+                                  style: context.text.labelSmall?.copyWith(
                                     color: ratingColor,
                                   ),
-                                  SizedBox.square(dimension: 5),
-                                  Text(
-                                    restaurant.rating.toString(),
-                                    style: context.text.labelSmall?.copyWith(
-                                      color: ratingColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
 
-                        // Address
-                        Row(
-                          children: [
-                            Icon(Icons.location_on_rounded, size: 15),
-                            SizedBox.square(dimension: 5),
-                            Text(
-                              restaurant.city,
-                              style: context.text.labelSmall,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      // Address
+                      Row(
+                        children: [
+                          Icon(Icons.location_on_rounded, size: 15),
+                          SizedBox.square(dimension: 5),
+                          Text(restaurant.city, style: context.text.labelSmall),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],

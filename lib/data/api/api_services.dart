@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:slurp_restaurant_app/data/model/restaurant_detail.dart';
 import 'package:slurp_restaurant_app/data/model/restaurant_list.dart';
 import 'package:http/http.dart' as http;
@@ -28,5 +27,4 @@ class ApiServices {
  }
 }
 
-final getRestaurantList = ApiServices().getRestaurantList();
 
