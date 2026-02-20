@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slurp_restaurant_app/data/model/restaurant_detail.dart';
 import 'package:slurp_restaurant_app/provider/detail/favorite_provider.dart';
-import 'package:slurp_restaurant_app/screen/detail/widget.dart/category_widget.dart';
+import 'package:slurp_restaurant_app/screen/detail/widget.dart/add_review.dart';
+import 'package:slurp_restaurant_app/screen/detail/widget.dart/category_chip_widget.dart';
 import 'package:slurp_restaurant_app/screen/detail/widget.dart/menu_card.dart';
+import 'package:slurp_restaurant_app/screen/detail/widget.dart/review_card.dart';
 import 'package:slurp_restaurant_app/utils/theme/theme_extensions.dart';
 
 class BodyOfDetailScreenWidget extends StatelessWidget {
@@ -14,7 +16,8 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundCard = Theme.of(context).colorScheme.surfaceBright;
-    final backgroundRating = Theme.of(context).colorScheme.primaryContainer;
+    final backgroundRating = Theme.of(context).colorScheme.onSecondary;
+    final backgroundError = Theme.of(context).colorScheme.surfaceContainer;
     final border = Theme.of(context).colorScheme.outline;
     final iconColor = Theme.of(context).colorScheme.primary;
     final textColor = Theme.of(context).colorScheme.onSurface;
@@ -23,6 +26,9 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
     final double coverHeight = 300;
 
     return SingleChildScrollView(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -40,7 +46,10 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                     ),
                     child: Image.network(
                       'https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}',
-                      fit: BoxFit.fitHeight,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Center(child: Icon(Icons.image_not_supported_sharp));
+                      },
                     ),
                   ),
                 ),
@@ -100,7 +109,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: backgroundCard,
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black26,
@@ -117,15 +126,18 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  restaurant.name,
-                                  style: context.text.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    color: textColor,
+                                Expanded(
+                                  child: Text(
+                                    restaurant.name,
+                                    style: context.text.titleLarge?.copyWith(
+                                      fontWeight: FontWeight.w900,
+                                      color: textColor,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
+                                const SizedBox.square(dimension: 8),
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: 8,
@@ -143,7 +155,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                                         size: 20,
                                         color: iconColor,
                                       ),
-                                      SizedBox.square(dimension: 5),
+                                      const SizedBox.square(dimension: 5),
                                       Text(
                                         restaurant.rating.toString(),
                                         style: context.text.bodyMedium
@@ -157,7 +169,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox.square(dimension: 10),
+                            const SizedBox.square(dimension: 10),
 
                             // Location
                             Row(
@@ -167,10 +179,10 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                                   size: 20,
                                   color: iconColor,
                                 ),
-                                SizedBox.square(dimension: 5),
+                                const SizedBox.square(dimension: 5),
                                 Text(
                                   restaurant.address,
-                                  style: context.text.labelSmall?.copyWith(
+                                  style: context.text.bodyMedium?.copyWith(
                                     color: textSecond,
                                   ),
                                   maxLines: 1,
@@ -178,26 +190,28 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox.square(dimension: 5),
+                            const SizedBox.square(dimension: 5),
                             Divider(),
-                            SizedBox.square(dimension: 5),
-                            // Expanded(
-                            //   child: ListView.builder(
-                            //     itemCount: restaurant.categories.length,
-                            //     scrollDirection: Axis.horizontal,
-                            //     physics: NeverScrollableScrollPhysics(),
-                            //     itemBuilder: (context, index) {
-                            //       final category = restaurant.categories[index];
-                              
-                            //       return CategoryWidget(
-                            //         text: category.toString(),
-                            //         backgroundRating: backgroundRating,
-                            //         border: border,
-                            //         iconColor: iconColor,
-                            //       );
-                            //     },
-                            //   ),
-                            // ),
+                            const SizedBox.square(dimension: 5),
+                            SizedBox(
+                              height: 32,
+                              child: ListView.builder(
+                                itemCount: restaurant.categories.length,
+                                scrollDirection: Axis.horizontal,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final category =
+                                      restaurant.categories[index].name;
+
+                                  return CategoryWidget(
+                                    text: category.toString(),
+                                    backgroundRating: backgroundRating,
+                                    border: border,
+                                    iconColor: iconColor,
+                                  );
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -212,7 +226,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                     child: Text(
                       restaurant.description,
                       style: context.text.labelSmall?.copyWith(
-                        color: Colors.grey.shade600,
+                        color: textSecond,
                       ),
                       textAlign: TextAlign.justify,
                     ),
@@ -225,6 +239,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: GridView.builder(
+                      padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: restaurant.menus.foods.length,
@@ -241,6 +256,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                       },
                     ),
                   ),
+                  const SizedBox.square(dimension: 16),
 
                   // Menus - Drinks
                   header(context, 'Popular Drink'),
@@ -248,6 +264,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: GridView.builder(
+                      padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: restaurant.menus.drinks.length,
@@ -264,8 +281,46 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                       },
                     ),
                   ),
+                  const SizedBox.square(dimension: 16),
 
                   // Review
+                  header(
+                    context,
+                    'Reviews',
+                    button: 'Add Review',
+                    icon: Icons.add,
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AddReviewDialog(restaurantId: restaurant.id),
+                      );
+                    },
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 10.0,
+                    ),
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: restaurant.customerReviews.length,
+                      itemBuilder: (context, index) {
+                        final review = restaurant.customerReviews[index];
+
+                        return ReviewCard(
+                          backgroundCard: backgroundCard,
+                          backgroundError: backgroundError,
+                          name: review.name,
+                          review: review.review,
+                          date: review.date,
+                          textColor: textColor,
+                          textSecond: textSecond,
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -275,15 +330,42 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
     );
   }
 
-  Widget header(BuildContext context, String title) {
+  Widget header(
+    BuildContext context,
+    String title, {
+    String? button,
+    IconData? icon,
+    VoidCallback? onPressed,
+  }) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: Text(
-        title,
-        style: context.text.titleMedium?.copyWith(
-          color: Theme.of(context).colorScheme.onSurface,
-          fontWeight: FontWeight.w700,
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: context.text.titleMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          if (button != null)
+            FilledButton.tonalIcon(
+              style: FilledButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+              ),
+              icon: Icon(icon),
+              onPressed: onPressed,
+              label: Text(
+                button,
+                style: context.text.labelMedium?.copyWith(
+                  // color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

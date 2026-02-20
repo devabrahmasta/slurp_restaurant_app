@@ -6,6 +6,7 @@ class CustomSearchBar extends StatefulWidget {
   final IconData? prefixIcon;
   final TextEditingController? controller;
   final bool enabled;
+  final bool autofocus;
   final void Function(String)? onChanged;
 
   const CustomSearchBar({
@@ -14,6 +15,7 @@ class CustomSearchBar extends StatefulWidget {
     this.prefixIcon,
     this.controller,
     this.enabled = true,
+    this.autofocus = false,
     this.onChanged,
   });
 
@@ -33,6 +35,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         borderRadius: BorderRadius.circular(30.0)
       ),
       child: TextField(
+        autofocus: widget.autofocus,
         textAlignVertical: TextAlignVertical.center,
         controller: widget.controller,
         enabled: widget.enabled,

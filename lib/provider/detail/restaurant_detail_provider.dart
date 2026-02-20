@@ -24,9 +24,25 @@ class RestaurantDetailProvider extends ChangeNotifier {
         _resultState = DetailLoadedState(result.restaurant);
         notifyListeners();
       }
-    } on Exception catch (e) {
-      _resultState = DetailErrorState(e.toString());
+    } catch (e) {
+      _resultState = DetailErrorState(
+        "Failed to load restaurant details. Please try again later.",
+      );
       notifyListeners();
+    }
+  }
+
+  Future<bool> submitReview(String id, String name, String review) async {
+    try {
+      final isSuccess = await _apiServices.addReview(id, name, review);
+
+      if (isSuccess) {
+        await fetchRestaurantDetail(id);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 }

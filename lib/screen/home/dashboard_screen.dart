@@ -29,14 +29,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Greeting
@@ -52,13 +50,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 overflow: TextOverflow.ellipsis,
                 style: context.text.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               const SizedBox.square(dimension: 16.0),
 
               // Search bar
-              CustomSearchBar(hintText: 'Search restaurants...'),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    NavigationRoute.searchRoute.name,
+                  );
+                },
+                child: AbsorbPointer(
+                  child: CustomSearchBar(hintText: 'Search restaurants...'),
+                ),
+              ),
               const SizedBox.square(dimension: 16.0),
 
               // Headline
@@ -93,7 +102,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           },
                         ),
                       ListErrorState(error: var message) => Center(
-                        child: Text(message),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.surfaceContainer,
+                              radius: 64,
+                              child: Icon(Icons.no_food_rounded, size: 40),
+                            ),
+                            SizedBox.square(dimension: 10),
+                            Text(
+                              message,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              'Please exit and try again',
+                              style: Theme.of(context).textTheme.bodySmall,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
                       _ => const SizedBox(),
                     };
@@ -108,15 +139,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget header(BuildContext context, String title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: context.text.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-        ),
-      ],
+    return Text(
+      title,
+      style: context.text.titleMedium?.copyWith(fontWeight: FontWeight.w700),
     );
   }
-
 }

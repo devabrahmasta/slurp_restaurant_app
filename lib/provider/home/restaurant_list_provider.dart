@@ -24,8 +24,10 @@ class RestaurantListProvider extends ChangeNotifier {
         _resultState = ListLoadedState(result.restaurants);
         notifyListeners();
       }
-    } on Exception catch (e) {
-      _resultState = ListErrorState(e.toString());
+    } catch (e) {
+      _resultState = ListErrorState(
+        "Failed to load restaurant data. Please check your internet connection and try again.",
+      );
       notifyListeners();
     }
   }

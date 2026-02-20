@@ -13,9 +13,13 @@ class RestoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundCard = Theme.of(context).colorScheme.surfaceBright;
-    final backgroundRating = Theme.of(context).colorScheme.secondaryContainer;
-    final ratingColor = Theme.of(context).colorScheme.primary;
-
+    final backgroundRating = Theme.of(context).colorScheme.onSecondary;
+    final backgroundError = Theme.of(context).colorScheme.surfaceContainer;
+    final border = Theme.of(context).colorScheme.outline;
+    final iconColor = Theme.of(context).colorScheme.primary;
+    final textColor = Theme.of(context).colorScheme.onSurface;
+    final textSecond = Theme.of(context).colorScheme.onSurfaceVariant;
+    
     return Padding(
       padding: EdgeInsets.only(bottom: 16.0),
       child: Card(
@@ -42,13 +46,20 @@ class RestoCard extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(15),
-                            topRight: Radius.circular(20),
+                            topRight: Radius.circular(15),
                           ),
                           child: Image.network(
                             'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return const Icon(Icons.image_not_supported_rounded);
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: backgroundError,
+                                ),
+                                child: const Icon(
+                                  Icons.image_not_supported_sharp,
+                                ),
+                              );
                             },
                           ),
                         ),
@@ -80,20 +91,6 @@ class RestoCard extends StatelessWidget {
                         },
                       ),
                     ),
-
-                    // waktu tunggu
-                    // Positioned(
-                    //   bottom: 8,
-                    //   left: 8,
-                    //   child: Container(
-                    //     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                    //     decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(20.0),
-                    //       color: Colors.white,
-                    //     ),
-                    //     child: Text(time, style: context.text.labelSmall),
-                    //   ),
-                    // ),
                   ],
                 ),
 
@@ -107,14 +104,21 @@ class RestoCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            restaurant.name,
-                            style: context.text.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w900,
+                          // Title
+                          Expanded(
+                            child: Text(
+                              restaurant.name,
+                              style: context.text.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: textColor,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
+                          const SizedBox.square(dimension: 8),
+
+                          // Rating
                           Container(
                             padding: EdgeInsets.symmetric(
                               horizontal: 8,
@@ -122,20 +126,22 @@ class RestoCard extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.0),
+                              border: Border.all(color: border),
                               color: backgroundRating,
                             ),
                             child: Row(
                               children: [
                                 Icon(
                                   Icons.star_rounded,
-                                  size: 15,
-                                  color: ratingColor,
+                                  size: 20,
+                                  color: iconColor,
                                 ),
-                                SizedBox.square(dimension: 5),
+                                const SizedBox.square(dimension: 5),
                                 Text(
                                   restaurant.rating.toString(),
-                                  style: context.text.labelSmall?.copyWith(
-                                    color: ratingColor,
+                                  style: context.text.bodyMedium?.copyWith(
+                                    color: iconColor,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -143,13 +149,25 @@ class RestoCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      const SizedBox.square(dimension: 10),
 
-                      // Address
+                      // Location
                       Row(
                         children: [
-                          Icon(Icons.location_on_rounded, size: 15),
-                          SizedBox.square(dimension: 5),
-                          Text(restaurant.city, style: context.text.labelSmall),
+                          Icon(
+                            Icons.location_on_outlined,
+                            size: 20,
+                            color: iconColor,
+                          ),
+                          const SizedBox.square(dimension: 5),
+                          Text(
+                            restaurant.city,
+                            style: context.text.bodySmall?.copyWith(
+                              color: textSecond,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                     ],
