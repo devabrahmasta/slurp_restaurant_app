@@ -183,13 +183,15 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                                   color: iconColor,
                                 ),
                                 const SizedBox.square(dimension: 5),
-                                Text(
-                                  restaurant.address,
-                                  style: context.text.bodyMedium?.copyWith(
-                                    color: textSecond,
+                                Expanded(
+                                  child: Text(
+                                    '${restaurant.address}, ${restaurant.city}',
+                                    style: context.text.bodyMedium?.copyWith(
+                                      color: textSecond,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
