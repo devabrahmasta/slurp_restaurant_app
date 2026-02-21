@@ -26,17 +26,25 @@ class ApiServices {
     }
   }
 
-  Future<bool> addReview(String id, String name, String review) async {
+  Future<List<CustomerReview>> addReview(
+    String id,
+    String name,
+    String review,
+  ) async {
     final response = await http.post(
       Uri.parse("$_baseUrl/review"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"id": id, "name": name, "review": review}),
     );
 
-    if (response.statusCode == 200 || response.statusCode == 201 ) {
-      return true; 
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      final data = jsonDecode(response.body);
+
+      return List<CustomerReview>.from(
+        data["customerReviews"].map((x) => CustomerReview.fromJson(x)),
+      );
     } else {
-      throw Exception('Failed to post review');
+      throw Exception('Failed to submit review');
     }
   }
 
@@ -46,7 +54,7 @@ class ApiServices {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return List<Restaurant>.from(
-        data["restaurants"].map((x) => Restaurant.fromJson(x))
+        data["restaurants"].map((x) => Restaurant.fromJson(x)),
       );
     } else {
       throw Exception('Failed to search restaurant');

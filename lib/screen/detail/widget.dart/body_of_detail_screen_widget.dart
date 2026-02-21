@@ -39,6 +39,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                 tag: restaurant.pictureId,
                 child: SizedBox(
                   height: coverHeight,
+                  width: double.infinity,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(15),
@@ -48,7 +49,9 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                       'https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return Center(child: Icon(Icons.image_not_supported_sharp));
+                        return Center(
+                          child: Icon(Icons.image_not_supported_sharp),
+                        );
                       },
                     ),
                   ),
@@ -292,7 +295,8 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) => AddReviewDialog(restaurantId: restaurant.id),
+                        builder: (context) =>
+                            AddReviewDialog(restaurantId: restaurant.id),
                       );
                     },
                   ),
@@ -360,7 +364,6 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
               label: Text(
                 button,
                 style: context.text.labelMedium?.copyWith(
-                  // color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w700,
                 ),
               ),

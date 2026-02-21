@@ -30,7 +30,9 @@ class RestaurantSearchProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      _resultState = ListErrorState("Unable to retrieve search results. Please check your connection and try again.");
+      _resultState = ListErrorState(
+        "Unable to retrieve search results. Please check your connection and try again.",
+      );
       notifyListeners();
     }
   }

@@ -59,11 +59,6 @@ class _DetailScreenState extends State<DetailScreen> {
                     style: Theme.of(context).textTheme.bodyLarge,
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Please back and try again',
-                    style: Theme.of(context).textTheme.bodySmall,
-                    textAlign: TextAlign.center,
-                  ),
                 ],
               ),
             ),

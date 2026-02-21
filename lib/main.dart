@@ -13,37 +13,28 @@ import 'package:slurp_restaurant_app/utils/theme/material.dart';
 import 'package:slurp_restaurant_app/utils/theme/utils.dart';
 
 void main() {
- runApp(
-   MultiProvider(
-     providers: [
-       ChangeNotifierProvider(
-         create: (context) => FavoriteProvider(),
-       ),
-       Provider(
-         create: (context) => ApiServices(),
-       ),
-       ChangeNotifierProvider(
-         create: (context) => RestaurantListProvider(
-           context.read<ApiServices>(),
-         ),
-       ),
-       ChangeNotifierProvider(
-         create: (context) => RestaurantDetailProvider(
-           context.read<ApiServices>(),
-         ),
-       ),
-       ChangeNotifierProvider(
-         create: (context) => RestaurantSearchProvider(
-           context.read<ApiServices>(),
-         ),
-       ),
-       
-     ],
-     child: const MyApp(),
-   ),
- );
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => FavoriteProvider()),
+        Provider(create: (context) => ApiServices()),
+        ChangeNotifierProvider(
+          create: (context) =>
+              RestaurantListProvider(context.read<ApiServices>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              RestaurantDetailProvider(context.read<ApiServices>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              RestaurantSearchProvider(context.read<ApiServices>()),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -64,8 +55,8 @@ class MyApp extends StatelessWidget {
         NavigationRoute.mainRoute.name: (context) => const DashboardScreen(),
         NavigationRoute.searchRoute.name: (context) => const SearchScreen(),
         NavigationRoute.detailRoute.name: (context) => DetailScreen(
-            restaurantId: ModalRoute.of(context)?.settings.arguments as String,
-            ),
+          restaurantId: ModalRoute.of(context)?.settings.arguments as String,
+        ),
       },
     );
   }

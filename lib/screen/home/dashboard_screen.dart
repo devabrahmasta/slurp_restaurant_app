@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:slurp_restaurant_app/provider/home/restaurant_list_provider.dart';
 import 'package:slurp_restaurant_app/screen/home/widget/resto_card.dart';
@@ -102,28 +101,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           },
                         ),
                       ListErrorState(error: var message) => Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Theme.of(
-                                context,
-                              ).colorScheme.surfaceContainer,
-                              radius: 64,
-                              child: Icon(Icons.no_food_rounded, size: 40),
-                            ),
-                            SizedBox.square(dimension: 10),
-                            Text(
-                              message,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              'Please exit and try again',
-                              style: Theme.of(context).textTheme.bodySmall,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainer,
+                                radius: 64,
+                                child: Icon(Icons.no_food_rounded, size: 40),
+                              ),
+                              SizedBox.square(dimension: 10),
+                              Text(
+                                message,
+                                style: Theme.of(context).textTheme.bodyLarge,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       _ => const SizedBox(),

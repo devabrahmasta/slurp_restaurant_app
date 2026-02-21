@@ -19,7 +19,7 @@ class RestoCard extends StatelessWidget {
     final iconColor = Theme.of(context).colorScheme.primary;
     final textColor = Theme.of(context).colorScheme.onSurface;
     final textSecond = Theme.of(context).colorScheme.onSurfaceVariant;
-    
+
     return Padding(
       padding: EdgeInsets.only(bottom: 16.0),
       child: Card(

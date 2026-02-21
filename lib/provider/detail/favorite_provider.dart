@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class FavoriteProvider extends ChangeNotifier{
+class FavoriteProvider extends ChangeNotifier {
   final Set<String> _favoriteDataIds = {};
 
   bool isFavorite(String id) {
@@ -13,6 +13,6 @@ class FavoriteProvider extends ChangeNotifier{
     } else {
       _favoriteDataIds.add(id);
     }
-    notifyListeners(); 
+    notifyListeners();
   }
 }

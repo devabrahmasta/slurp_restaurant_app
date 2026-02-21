@@ -73,27 +73,29 @@ class SearchScreen extends StatelessWidget {
                           },
                         ),
                       ListErrorState(error: var message) => Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Theme.of(
-                                context,
-                              ).colorScheme.surfaceContainer,
-                              radius: 64,
-                              child: Icon(
-                                Icons.search_off_rounded,
-                                size: 64,
-                                color: textSecond,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainer,
+                                radius: 64,
+                                child: Icon(
+                                  Icons.search_off_rounded,
+                                  size: 64,
+                                  color: textSecond,
+                                ),
                               ),
-                            ),
-                            const SizedBox.square(dimension: 16),
-                            Text(
-                              message,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                              const SizedBox.square(dimension: 16),
+                              Text(
+                                message,
+                                style: Theme.of(context).textTheme.bodyLarge,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     };

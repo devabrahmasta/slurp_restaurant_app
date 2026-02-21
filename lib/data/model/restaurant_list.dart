@@ -1,74 +1,78 @@
-// import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class RestaurantListResponse {
-    bool error;
-    String message;
-    int count;
-    List<Restaurant> restaurants;
+  bool error;
+  String message;
+  int count;
+  List<Restaurant> restaurants;
 
-    RestaurantListResponse({
-        required this.error,
-        required this.message,
-        required this.count,
-        required this.restaurants,
-    });
+  RestaurantListResponse({
+    required this.error,
+    required this.message,
+    required this.count,
+    required this.restaurants,
+  });
 
-    factory RestaurantListResponse.fromRawJson(String str) => RestaurantListResponse.fromJson(json.decode(str));
+  factory RestaurantListResponse.fromRawJson(String str) =>
+      RestaurantListResponse.fromJson(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+  String toRawJson() => json.encode(toJson());
 
-    factory RestaurantListResponse.fromJson(Map<String, dynamic> json) => RestaurantListResponse(
+  factory RestaurantListResponse.fromJson(Map<String, dynamic> json) =>
+      RestaurantListResponse(
         error: json["error"],
         message: json["message"],
         count: json["count"],
-        restaurants: List<Restaurant>.from(json["restaurants"].map((x) => Restaurant.fromJson(x))),
-    );
+        restaurants: List<Restaurant>.from(
+          json["restaurants"].map((x) => Restaurant.fromJson(x)),
+        ),
+      );
 
-    Map<String, dynamic> toJson() => {
-        "error": error,
-        "message": message,
-        "count": count,
-        "restaurants": List<dynamic>.from(restaurants.map((x) => x.toJson())),
-    };
+  Map<String, dynamic> toJson() => {
+    "error": error,
+    "message": message,
+    "count": count,
+    "restaurants": List<dynamic>.from(restaurants.map((x) => x.toJson())),
+  };
 }
 
 class Restaurant {
-    String id;
-    String name;
-    String description;
-    String pictureId;
-    String city;
-    double rating;
+  String id;
+  String name;
+  String description;
+  String pictureId;
+  String city;
+  double rating;
 
-    Restaurant({
-        required this.id,
-        required this.name,
-        required this.description,
-        required this.pictureId,
-        required this.city,
-        required this.rating,
-    });
+  Restaurant({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.pictureId,
+    required this.city,
+    required this.rating,
+  });
 
-    factory Restaurant.fromRawJson(String str) => Restaurant.fromJson(json.decode(str));
+  factory Restaurant.fromRawJson(String str) =>
+      Restaurant.fromJson(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+  String toRawJson() => json.encode(toJson());
 
-    factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        pictureId: json["pictureId"],
-        city: json["city"],
-        rating: json["rating"]?.toDouble(),
-    );
+  factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
+    id: json["id"],
+    name: json["name"],
+    description: json["description"],
+    pictureId: json["pictureId"],
+    city: json["city"],
+    rating: json["rating"]?.toDouble(),
+  );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "description": description,
-        "pictureId": pictureId,
-        "city": city,
-        "rating": rating,
-    };
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "description": description,
+    "pictureId": pictureId,
+    "city": city,
+    "rating": rating,
+  };
 }

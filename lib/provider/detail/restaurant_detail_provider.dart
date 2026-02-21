@@ -10,6 +10,9 @@ class RestaurantDetailProvider extends ChangeNotifier {
   DetailResultState _resultState = DetailNoneState();
   DetailResultState get resultState => _resultState;
 
+  bool _isReviewSubmitting = false;
+  bool get isReviewSubmitting => _isReviewSubmitting;
+
   Future<void> fetchRestaurantDetail(String id) async {
     try {
       _resultState = DetailLoadingState();
@@ -34,15 +37,25 @@ class RestaurantDetailProvider extends ChangeNotifier {
 
   Future<bool> submitReview(String id, String name, String review) async {
     try {
-      final isSuccess = await _apiServices.addReview(id, name, review);
+      _isReviewSubmitting = true;
+      notifyListeners();
 
-      if (isSuccess) {
-        await fetchRestaurantDetail(id);
-        return true;
+      final newReviews = await _apiServices.addReview(id, name, review);
+
+      if (_resultState is DetailLoadedState) {
+        final currentRestaurant =
+            (_resultState as DetailLoadedState).restaurant;
+        currentRestaurant.customerReviews = newReviews;
+        _resultState = DetailLoadedState(currentRestaurant);
       }
-      return false;
+
+      _isReviewSubmitting = false;
+      notifyListeners();
+      return true;
     } catch (e) {
-      throw Exception(e.toString());
+      _isReviewSubmitting = false;
+      notifyListeners();
+      return false;
     }
   }
 }
