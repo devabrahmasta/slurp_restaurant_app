@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:slurp_restaurant_app/provider/detail/restaurant_detail_provider.dart';
 import 'package:slurp_restaurant_app/screen/detail/widget.dart/body_of_detail_screen_widget.dart';
 import 'package:slurp_restaurant_app/static/detail_result_state.dart';
+import 'package:slurp_restaurant_app/utils/widget/refresh_button.dart';
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({super.key, required this.restaurantId});
@@ -59,6 +60,8 @@ class _DetailScreenState extends State<DetailScreen> {
                     style: Theme.of(context).textTheme.bodyLarge,
                     textAlign: TextAlign.center,
                   ),
+                  const SizedBox.square(dimension: 30),
+                  RefreshButton(),
                 ],
               ),
             ),

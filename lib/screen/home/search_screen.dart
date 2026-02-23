@@ -6,6 +6,7 @@ import 'package:slurp_restaurant_app/screen/home/widget/search_widget.dart';
 import 'package:slurp_restaurant_app/static/list_result_state.dart';
 import 'package:slurp_restaurant_app/static/navigation_route.dart';
 import 'package:slurp_restaurant_app/utils/theme/theme_extensions.dart';
+import 'package:slurp_restaurant_app/utils/widget/refresh_button.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -94,6 +95,8 @@ class SearchScreen extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.center,
                               ),
+                              const SizedBox.square(dimension: 30),
+                              RefreshButton(),
                             ],
                           ),
                         ),

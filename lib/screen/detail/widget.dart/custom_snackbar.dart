@@ -9,7 +9,7 @@ class CustomSnackBar {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.only(bottom: 24, left: 24, right: 24),
+        margin: const EdgeInsets.only(top: 24, left: 24, right: 24),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         backgroundColor: isSuccess
             ? Theme.of(context).colorScheme.primary

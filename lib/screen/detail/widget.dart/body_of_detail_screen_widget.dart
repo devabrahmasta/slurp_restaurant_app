@@ -343,6 +343,9 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
     IconData? icon,
     VoidCallback? onPressed,
   }) {
+    final backgroundRating = Theme.of(context).colorScheme.onSecondary;
+    final iconColor = Theme.of(context).colorScheme.primary;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
@@ -358,14 +361,15 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
           if (button != null)
             FilledButton.tonalIcon(
               style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                foregroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: backgroundRating,
+                foregroundColor: iconColor,
               ),
               icon: Icon(icon),
               onPressed: onPressed,
               label: Text(
                 button,
                 style: context.text.labelMedium?.copyWith(
+
                   fontWeight: FontWeight.w700,
                 ),
               ),

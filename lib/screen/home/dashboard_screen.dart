@@ -6,6 +6,7 @@ import 'package:slurp_restaurant_app/screen/home/widget/search_widget.dart';
 import 'package:slurp_restaurant_app/static/list_result_state.dart';
 import 'package:slurp_restaurant_app/static/navigation_route.dart';
 import 'package:slurp_restaurant_app/utils/theme/theme_extensions.dart';
+import 'package:slurp_restaurant_app/utils/widget/refresh_button.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -31,6 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       body: SafeArea(
+        top: true,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -112,12 +114,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 radius: 64,
                                 child: Icon(Icons.no_food_rounded, size: 40),
                               ),
-                              SizedBox.square(dimension: 10),
+                              const SizedBox.square(dimension: 10),
                               Text(
                                 message,
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.center,
                               ),
+                              const SizedBox.square(dimension: 30),
+                              RefreshButton(),
                             ],
                           ),
                         ),
@@ -141,3 +145,4 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 }
+
