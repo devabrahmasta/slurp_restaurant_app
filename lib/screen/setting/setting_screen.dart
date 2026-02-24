@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:slurp_restaurant_app/provider/setting/shared_preferences_service.dart';
-import 'package:slurp_restaurant_app/provider/setting/theme_state_provider.dart';
 import 'package:slurp_restaurant_app/screen/setting/widget/radio_theme_button.dart';
-import 'package:slurp_restaurant_app/utils/theme_state.dart';
 import 'package:slurp_restaurant_app/utils/theme/theme_extensions.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -14,33 +10,16 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    final themeStateProvider = context.read<ThemeStateProvider>();
-    final sharedPreferencesProvider = context.read<SharedPreferencesProvider>();
-
-    Future.microtask(() async {
-      sharedPreferencesProvider.getSettingValue();
-      final setting = sharedPreferencesProvider.setting;
-
-      if (setting != null) {
-        themeStateProvider.themeState = setting.screenTheme.toThemeState();
-      } else {
-        themeStateProvider.themeState = ThemeState.system;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final backgroundCard = Theme.of(context).colorScheme.surfaceBright;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text('Setting Page'),
+        title: const Text("Setting App", style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(

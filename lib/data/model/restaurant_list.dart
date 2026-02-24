@@ -44,7 +44,7 @@ class Restaurant {
   String city;
   double rating;
 
-  Restaurant({
+  Restaurant({  
     required this.id,
     required this.name,
     required this.description,

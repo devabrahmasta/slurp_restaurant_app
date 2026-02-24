@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slurp_restaurant_app/data/model/restaurant_list.dart';
-import 'package:slurp_restaurant_app/provider/detail/favorite_provider.dart';
+import 'package:slurp_restaurant_app/provider/bookmark/favorite_icon_provider.dart';
 import 'package:slurp_restaurant_app/utils/theme/theme_extensions.dart';
+import 'package:slurp_restaurant_app/utils/widget/favorite_button_tonal.dart';
 
 class RestoCard extends StatelessWidget {
   final Restaurant restaurant;
@@ -70,24 +71,9 @@ class RestoCard extends StatelessWidget {
                     Positioned(
                       top: 8,
                       right: 8,
-                      child: Consumer<FavoriteProvider>(
+                      child: Consumer<FavoriteIconProvider>(
                         builder: (context, value, child) {
-                          final isFavorite = value.isFavorite(restaurant.id);
-
-                          return IconButton.filledTonal(
-                            style: IconButton.styleFrom(
-                              backgroundColor: Colors.black38,
-                            ),
-                            onPressed: () {
-                              value.toggleFavorite(restaurant.id);
-                            },
-                            icon: Icon(
-                              isFavorite
-                                  ? Icons.favorite_rounded
-                                  : Icons.favorite_outline,
-                              color: isFavorite ? Colors.red : Colors.white,
-                            ),
-                          );
+                          return FavoriteButton(restaurant: restaurant);
                         },
                       ),
                     ),

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slurp_restaurant_app/data/model/restaurant_detail.dart';
-import 'package:slurp_restaurant_app/provider/detail/favorite_provider.dart';
+import 'package:slurp_restaurant_app/data/model/restaurant_list.dart';
+import 'package:slurp_restaurant_app/provider/bookmark/favorite_icon_provider.dart';
 import 'package:slurp_restaurant_app/screen/detail/widget.dart/add_review.dart';
 import 'package:slurp_restaurant_app/screen/detail/widget.dart/category_chip_widget.dart';
 import 'package:slurp_restaurant_app/screen/detail/widget.dart/menu_card.dart';
 import 'package:slurp_restaurant_app/screen/detail/widget.dart/review_card.dart';
 import 'package:slurp_restaurant_app/utils/theme/theme_extensions.dart';
+import 'package:slurp_restaurant_app/utils/widget/back_button_tonal.dart';
+import 'package:slurp_restaurant_app/utils/widget/favorite_button_tonal.dart';
 
 class BodyOfDetailScreenWidget extends StatelessWidget {
   const BodyOfDetailScreenWidget({super.key, required this.restaurant});
@@ -24,6 +27,15 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
     final textSecond = Theme.of(context).colorScheme.onSurfaceVariant;
 
     final double coverHeight = 300;
+
+    final restaurantData = Restaurant(
+      id: restaurant.id,
+      name: restaurant.name,
+      description: restaurant.description,
+      pictureId: restaurant.pictureId,
+      city: restaurant.city,
+      rating: restaurant.rating,
+    );
 
     return SingleChildScrollView(
       padding: EdgeInsets.only(
@@ -58,47 +70,17 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                 ),
               ),
 
-              // Navigation Button
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Navigation Button
                   Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        IconButton.filledTonal(
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.black38,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_rounded,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Consumer<FavoriteProvider>(
-                          builder: (context, value, child) {
-                            final isFavorite = value.isFavorite(restaurant.id);
-
-                            return IconButton.filledTonal(
-                              style: IconButton.styleFrom(
-                                backgroundColor: Colors.black38,
-                              ),
-                              onPressed: () {
-                                value.toggleFavorite(restaurant.id);
-                              },
-                              icon: Icon(
-                                isFavorite
-                                    ? Icons.favorite_rounded
-                                    : Icons.favorite_outline,
-                                color: isFavorite ? Colors.red : Colors.white,
-                              ),
-                            );
-                          },
-                        ),
+                        BackButtonTonal(),
+                        FavoriteButton(restaurant: restaurantData),
                       ],
                     ),
                   ),
@@ -369,7 +351,6 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
               label: Text(
                 button,
                 style: context.text.labelMedium?.copyWith(
-
                   fontWeight: FontWeight.w700,
                 ),
               ),

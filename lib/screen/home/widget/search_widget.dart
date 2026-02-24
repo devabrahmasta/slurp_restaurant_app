@@ -30,7 +30,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       padding: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-        color: Theme.of(context).colorScheme.surfaceBright,
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(30.0),
       ),
       child: TextField(
@@ -44,14 +44,14 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           isDense: true,
           hintText: widget.hintText,
           hintStyle: context.text.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,
           ),
           prefixIcon: Padding(
             padding: const EdgeInsets.only(left: 24, right: 8),
             child: Icon(
               Icons.search_rounded,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               size: 24,
             ),
           ),
