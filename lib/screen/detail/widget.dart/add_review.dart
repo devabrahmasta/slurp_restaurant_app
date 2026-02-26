@@ -40,6 +40,7 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
 
             // Name
             TextField(
+              key: const ValueKey("reviewNameField"),
               controller: _nameController,
               enabled: !isLoading,
               decoration: const InputDecoration(
@@ -51,6 +52,7 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
 
             // Review
             TextField(
+              key: const ValueKey("reviewMessageField"),
               controller: _reviewController,
               enabled: !isLoading,
               maxLines: 3,
@@ -73,6 +75,7 @@ class _AddReviewDialogState extends State<AddReviewDialog> {
 
                 // Submit button
                 FilledButton(
+                  key: const ValueKey("reviewSubmitButton"),
                   onPressed: isLoading
                       ? null
                       : () async {

@@ -9,26 +9,37 @@ import 'package:slurp_restaurant_app/provider/detail/restaurant_detail_provider.
 import 'package:slurp_restaurant_app/provider/home/restaurant_list_provider.dart';
 import 'package:slurp_restaurant_app/provider/home/restaurant_search_provider.dart';
 import 'package:slurp_restaurant_app/provider/main/index_nav_provider.dart';
-import 'package:slurp_restaurant_app/provider/setting/shared_preferences_service.dart';
+import 'package:slurp_restaurant_app/provider/setting/local_notification_providers.dart';
+import 'package:slurp_restaurant_app/provider/setting/payload_provider.dart';
+import 'package:slurp_restaurant_app/provider/setting/scheduling_provider.dart';
+import 'package:slurp_restaurant_app/provider/setting/shared_preferences_provider.dart';
 import 'package:slurp_restaurant_app/provider/setting/theme_state_provider.dart';
 import 'package:slurp_restaurant_app/screen/detail/detail_screen.dart';
 import 'package:slurp_restaurant_app/screen/home/search_screen.dart';
 import 'package:slurp_restaurant_app/screen/main/main_screen.dart';
 import 'package:slurp_restaurant_app/screen/setting/setting_screen.dart';
+import 'package:slurp_restaurant_app/services/local_notification_services.dart';
 import 'package:slurp_restaurant_app/services/shared_preferences_service.dart';
 import 'package:slurp_restaurant_app/static/navigation_route.dart';
 import 'package:slurp_restaurant_app/utils/theme/material.dart';
 import 'package:slurp_restaurant_app/utils/theme/utils.dart';
 import 'package:slurp_restaurant_app/utils/theme_state.dart';
 
-void main() async {
+final GlobalKey<NavigatorState> globalKey = GlobalKey<NavigatorState>();
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
-
   final sharedPrefService = SharedPreferencesService(prefs);
-  
   final savedSetting = sharedPrefService.getSettingValue();
   final initialTheme = savedSetting.screenTheme.toThemeState();
+  final notificationAppLaunchDetails = await flutterLocalNotificationsPlugin
+      .getNotificationAppLaunchDetails();
+
+  String? payload;
+  if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+    payload = notificationAppLaunchDetails?.notificationResponse?.payload;
+  }
 
   runApp(
     MultiProvider(
@@ -67,9 +78,26 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) {
             final themeProvider = ThemeStateProvider();
-            themeProvider.themeState = initialTheme; // Set tema di awal!
+            themeProvider.themeState = initialTheme;
             return themeProvider;
           },
+        ),
+
+        ChangeNotifierProvider(
+          create: (context) => PayloadProvider(payload: payload),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SchedulingProvider(sharedPrefService),
+        ),
+        Provider(
+          create: (context) => LocalNotificationService()
+            ..init()
+            ..configureLocalTimeZone(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocalNotificationProvider(
+            context.read<LocalNotificationService>(),
+          )..requestPermissions(),
         ),
       ],
       child: const MyApp(),
@@ -86,6 +114,7 @@ class MyApp extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
 
     return MaterialApp(
+      navigatorKey: globalKey,
       title: 'Slurp',
       debugShowCheckedModeBanner: false,
       theme: theme.light(),

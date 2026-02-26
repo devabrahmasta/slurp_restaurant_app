@@ -22,7 +22,9 @@ class _FavoriteButtonState extends State<FavoriteButton> {
 
     Future.microtask(() async {
       await localDatabaseProvider.loadAllFavorite();
-      final value = localDatabaseProvider.checkItemFavorite(widget.restaurant.id);
+      final value = localDatabaseProvider.checkItemFavorite(
+        widget.restaurant.id,
+      );
 
       favoriteIconProvider.setFavorited(widget.restaurant.id, value);
     });
@@ -35,6 +37,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
         final isFavorited = provider.isFavorited(widget.restaurant.id);
 
         return IconButton.filledTonal(
+          key: const ValueKey("favoriteButton"),
           style: IconButton.styleFrom(backgroundColor: Colors.black38),
           onPressed: () async {
             final localDatabaseProvider = context.read<LocalDatabaseProvider>();
@@ -42,7 +45,9 @@ class _FavoriteButtonState extends State<FavoriteButton> {
             if (!isFavorited) {
               await localDatabaseProvider.saveFavorite(widget.restaurant);
             } else {
-              await localDatabaseProvider.removeFavoriteById(widget.restaurant.id);
+              await localDatabaseProvider.removeFavoriteById(
+                widget.restaurant.id,
+              );
             }
 
             provider.setFavorited(widget.restaurant.id, !isFavorited);

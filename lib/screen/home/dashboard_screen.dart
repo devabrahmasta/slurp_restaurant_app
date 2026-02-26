@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slurp_restaurant_app/provider/home/restaurant_list_provider.dart';
+import 'package:slurp_restaurant_app/provider/setting/payload_provider.dart';
 import 'package:slurp_restaurant_app/screen/home/widget/resto_card.dart';
 import 'package:slurp_restaurant_app/screen/home/widget/search_widget.dart';
+import 'package:slurp_restaurant_app/services/local_notification_services.dart';
 import 'package:slurp_restaurant_app/static/list_result_state.dart';
 import 'package:slurp_restaurant_app/static/navigation_route.dart';
 import 'package:slurp_restaurant_app/utils/theme/theme_extensions.dart';
@@ -18,12 +20,34 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int selectedIndex = 0;
 
+  void _configureSelectNotificationSubject() {
+    selectNotificationStream.stream.listen((String? payload) {
+      context.read<PayloadProvider>().payload = payload;
+      Navigator.pushNamed(
+        context,
+        NavigationRoute.detailRoute.name,
+        arguments: payload,
+      );
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _configureSelectNotificationSubject();
 
     Future.microtask(() {
       context.read<RestaurantListProvider>().fetchRestaurantList();
+
+      final payloadProvider = context.read<PayloadProvider>();
+      if (payloadProvider.payload != null) {
+        Navigator.pushNamed(
+          context,
+          NavigationRoute.detailRoute.name,
+          arguments: payloadProvider.payload,
+        );
+        payloadProvider.payload = null;
+      }
     });
   }
 
@@ -58,6 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
               // Search bar
               GestureDetector(
+                key: const ValueKey("searchBarDashboard"),
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   Navigator.pushNamed(
@@ -91,6 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             final restaurant = restaurantList[index];
 
                             return RestoCard(
+                              key: const ValueKey("restoCard"),
                               restaurant: restaurant,
                               onTap: () {
                                 Navigator.pushNamed(
@@ -145,4 +171,3 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 }
-

@@ -34,6 +34,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         borderRadius: BorderRadius.circular(30.0),
       ),
       child: TextField(
+        key: const ValueKey("searchTextField"),
         autofocus: widget.autofocus,
         textAlignVertical: TextAlignVertical.center,
         controller: widget.controller,

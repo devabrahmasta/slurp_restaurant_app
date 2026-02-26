@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:slurp_restaurant_app/provider/setting/local_notification_providers.dart';
+import 'package:slurp_restaurant_app/provider/setting/scheduling_provider.dart';
 import 'package:slurp_restaurant_app/screen/setting/widget/radio_theme_button.dart';
 import 'package:slurp_restaurant_app/utils/theme/theme_extensions.dart';
 
@@ -10,7 +13,6 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-
   @override
   Widget build(BuildContext context) {
     final backgroundCard = Theme.of(context).colorScheme.surfaceBright;
@@ -18,7 +20,10 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       appBar: AppBar(
-        title: const Text("Setting App", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          "Setting App",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       ),
       body: SingleChildScrollView(
@@ -42,7 +47,11 @@ class _SettingScreenState extends State<SettingScreen> {
               clipBehavior: Clip.antiAlias,
               child: Column(
                 children: [
-                  InkWell(
+                  ListTile(
+                    key: const ValueKey("themeMenuTile"),
+                    leading: Icon(Icons.dark_mode_rounded),
+                    title: Text('Theme App', style: context.text.bodyMedium),
+                    trailing: Icon(Icons.arrow_forward_ios_rounded, size: 15),
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
@@ -51,14 +60,33 @@ class _SettingScreenState extends State<SettingScreen> {
                         },
                       );
                     },
-                    child: ListTile(
-                      leading: Icon(Icons.dark_mode_rounded),
-                      title: Text(
-                        'Theme App',
-                        style: context.text.bodyMedium,
-                      ),
-                      trailing: Icon(Icons.arrow_forward_ios_rounded, size: 15),
-                    ),
+                  ),
+                  const Divider(height: 1),
+                  Consumer<SchedulingProvider>(
+                    builder: (context, provider, child) {
+                      return ListTile(
+                        leading: Icon(Icons.notifications_active),
+                        title: Text(
+                          'Daily Reminder',
+                          style: context.text.bodyMedium,
+                        ),
+                        subtitle: Text(
+                          'Enable random restaurant recommendation at 11 AM',
+                          style: context.text.labelSmall?.copyWith(
+                            fontWeight: FontWeight.w200,
+                          ),
+                        ),
+                        trailing: Switch(
+                          value: provider.isScheduled,
+                          onChanged: (value) async {
+                            await provider.scheduledReminder(
+                              value,
+                              context.read<LocalNotificationProvider>(),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -79,39 +107,6 @@ class _SettingScreenState extends State<SettingScreen> {
           fontWeight: FontWeight.w700,
         ),
       ),
-    );
-  }
-}
-
-class SettingList extends StatelessWidget {
-  final Widget? leading;
-  final Widget? title;
-  final Widget? subtitle;
-  final Widget? trailing;
-  final bool? isThreeLine;
-  final bool? dense;
-  final VisualDensity? visualDensity;
-  final ShapeBorder? shape;
-  final ListTileStyle? style;
-
-  const SettingList({
-    super.key,
-    this.leading,
-    this.title,
-    this.subtitle,
-    this.trailing,
-    this.isThreeLine,
-    this.dense,
-    this.visualDensity,
-    this.shape,
-    this.style,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Text('Theme App'),
-      trailing: Icon(Icons.arrow_forward_ios_rounded, size: 15),
     );
   }
 }

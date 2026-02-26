@@ -73,7 +73,10 @@ class RestoCard extends StatelessWidget {
                       right: 8,
                       child: Consumer<FavoriteIconProvider>(
                         builder: (context, value, child) {
-                          return FavoriteButton(restaurant: restaurant);
+                          return FavoriteButton(
+                            key: const ValueKey("favoriteButton"),
+                            restaurant: restaurant,
+                          );
                         },
                       ),
                     ),

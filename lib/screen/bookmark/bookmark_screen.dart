@@ -26,7 +26,10 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       appBar: AppBar(
-        title: const Text("Bookmark List", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          "Bookmark List",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       ),
       body: Consumer<LocalDatabaseProvider>(

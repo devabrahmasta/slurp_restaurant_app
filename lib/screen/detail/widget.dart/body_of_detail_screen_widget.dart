@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:slurp_restaurant_app/data/model/restaurant_detail.dart';
 import 'package:slurp_restaurant_app/data/model/restaurant_list.dart';
-import 'package:slurp_restaurant_app/provider/bookmark/favorite_icon_provider.dart';
 import 'package:slurp_restaurant_app/screen/detail/widget.dart/add_review.dart';
 import 'package:slurp_restaurant_app/screen/detail/widget.dart/category_chip_widget.dart';
 import 'package:slurp_restaurant_app/screen/detail/widget.dart/menu_card.dart';
@@ -38,6 +36,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
     );
 
     return SingleChildScrollView(
+      key: const ValueKey("detailScrollView"),
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom + 20,
       ),
@@ -342,6 +341,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
           ),
           if (button != null)
             FilledButton.tonalIcon(
+              key: const ValueKey("addReviewButton"),
               style: FilledButton.styleFrom(
                 backgroundColor: backgroundRating,
                 foregroundColor: iconColor,

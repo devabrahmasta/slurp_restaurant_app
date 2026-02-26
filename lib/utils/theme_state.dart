@@ -1,8 +1,4 @@
-enum ThemeState {
-  system,
-  light,
-  dark;
-}
+enum ThemeState { system, light, dark }
 
 extension ThemeStateExtension on String {
   ThemeState toThemeState() {

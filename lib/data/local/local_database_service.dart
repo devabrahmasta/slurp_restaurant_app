@@ -7,8 +7,7 @@ class LocalDatabaseService {
   static const int _version = 1;
 
   Future<void> createTables(Database database) async {
-    await database.execute(
-      """CREATE TABLE $_tableName(
+    await database.execute("""CREATE TABLE $_tableName(
        id TEXT PRIMARY KEY,
        name TEXT,
        description TEXT,
@@ -16,8 +15,7 @@ class LocalDatabaseService {
        pictureId TEXT,
        rating DOUBLE
      )
-     """
-    );
+     """);
   }
 
   Future<Database> _initializeDb() async {

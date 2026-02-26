@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slurp_restaurant_app/data/model/setting.dart';
-import 'package:slurp_restaurant_app/provider/setting/shared_preferences_service.dart';
+import 'package:slurp_restaurant_app/provider/setting/shared_preferences_provider.dart';
 import 'package:slurp_restaurant_app/provider/setting/theme_state_provider.dart';
 import 'package:slurp_restaurant_app/utils/theme_state.dart';
 
@@ -45,10 +45,10 @@ class RadioThemeButton extends StatelessWidget {
                     onChanged: (ThemeState? value) {
                       if (value != null) {
                         provider.themeState = value;
-                  
-                        context.read<SharedPreferencesProvider>().saveSettingValue(
-                          Setting(screenTheme: value.name),
-                        );
+
+                        context
+                            .read<SharedPreferencesProvider>()
+                            .saveSettingValue(Setting(screenTheme: value.name));
                       }
                     },
                     child: Column(
@@ -58,10 +58,12 @@ class RadioThemeButton extends StatelessWidget {
                           value: ThemeState.system,
                         ),
                         RadioListTile<ThemeState>(
+                          key: const ValueKey("radioLight"),
                           title: const Text("Light Mode"),
                           value: ThemeState.light,
                         ),
                         RadioListTile<ThemeState>(
+                          key: const ValueKey("radioDark"),
                           title: const Text("Dark Mode"),
                           value: ThemeState.dark,
                         ),

@@ -43,6 +43,7 @@ class MainScreen extends StatelessWidget {
       bottomNavigationBar: Consumer<IndexNavProvider>(
         builder: (context, value, child) {
           return NavigationBar(
+            backgroundColor: Theme.of(context).colorScheme.surface,
             selectedIndex: value.indexBottomNavBar,
             onDestinationSelected: (index) {
               context.read<IndexNavProvider>().setIndextBottomNavBar = index;
